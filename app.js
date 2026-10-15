@@ -303,7 +303,7 @@ function selectClip(start, dur) {
   const s = clamp(start, 0, Math.max(0, state.duration - d));
   // Purane b-roll ke object URLs saaf karein
   if (state.clip) state.clip.brolls.forEach(b => { if (b.url) URL.revokeObjectURL(b.url); });
-  state.clip = { n: state.clipCount, start: s, duration: d, title: '', raw: '', cues: [], brolls: [] };
+  state.clip = { n: state.clipCount, start: s, duration: d, title: '', raw: '', cues: [], brolls: [], framing: 'full' };
   syncEditorFromClip();
   ['sec-editor', 'sec-preview', 'sec-export'].forEach(id => document.getElementById(id).classList.remove('hidden'));
   try { vidMain.currentTime = s; } catch (e) {}
@@ -316,6 +316,7 @@ function syncEditorFromClip() {
   document.getElementById('clipDur').value = Math.round(c.duration);
   document.getElementById('clipTitle').value = c.title;
   document.getElementById('clipTranscript').value = c.raw;
+  document.getElementById('clipFraming').value = c.framing || 'full';
   const sc = document.getElementById('scrub');
   sc.max = c.duration; sc.value = 0;
   updateTimeUI();
@@ -325,6 +326,10 @@ function syncEditorFromClip() {
 document.getElementById('newClipBtn').addEventListener('click', () => {
   if (!state.duration) { alert('Pehle video upload karein.'); return; }
   selectClip(0, state.clipDur);
+});
+document.getElementById('clipFraming').addEventListener('change', e => {
+  if (!state.clip) return;
+  state.clip.framing = e.target.value; // 'full' = poori 9:16, 'blur' = dhundli background
 });
 document.getElementById('clipStart').addEventListener('change', e => {
   if (!state.clip) return;
@@ -649,22 +654,32 @@ function punchZoom(t) {
 function drawFrame(t) {
   const clip = state.clip;
   if (!clip || !state.vw) return;
-  // 1) Dhundli background (video ka hi bara, blur copy)
-  ctx.save();
-  if (state.filterOK) ctx.filter = 'blur(30px) brightness(0.55)';
-  const s = Math.max(720 / state.vw, 1280 / state.vh);
-  const dw = state.vw * s, dh = state.vh * s;
-  try { ctx.drawImage(vidMain, (720 - dw) / 2, (1280 - dh) / 2, dw, dh); } catch (e) {}
-  ctx.restore();
-  if (!state.filterOK) { // Safari purana: saada gehra parda
-    ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    ctx.fillRect(0, 0, 720, 1280);
-  }
-  // 2) Asal video darmiyan me — smooth punch-in zoom ke saath
-  const r = mainRect();
+  const full = (clip.framing || 'full') === 'full';
   const z = punchZoom(t);
-  const zw = r.w * z, zh = r.h * z;
-  try { ctx.drawImage(vidMain, r.x + (r.w - zw) / 2, r.y + (r.h - zh) / 2, zw, zh); } catch (e) {}
+  let r;
+  if (full) {
+    // FULL SCREEN: poora 9:16 frame video se bharein — koi blur nahi, sides crop honge
+    const s = Math.max(720 / state.vw, 1280 / state.vh) * z;
+    const dw = state.vw * s, dh = state.vh * s;
+    try { ctx.drawImage(vidMain, (720 - dw) / 2, (1280 - dh) / 2, dw, dh); } catch (e) {}
+    r = { x: 0, y: 0, w: 720, h: 1280 };
+  } else {
+    // 1) Dhundli background (video ka hi bara, blur copy)
+    ctx.save();
+    if (state.filterOK) ctx.filter = 'blur(30px) brightness(0.55)';
+    const s = Math.max(720 / state.vw, 1280 / state.vh);
+    const dw = state.vw * s, dh = state.vh * s;
+    try { ctx.drawImage(vidMain, (720 - dw) / 2, (1280 - dh) / 2, dw, dh); } catch (e) {}
+    ctx.restore();
+    if (!state.filterOK) { // Safari purana: saada gehra parda
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.fillRect(0, 0, 720, 1280);
+    }
+    // 2) Asal video darmiyan me — smooth punch-in zoom ke saath
+    r = mainRect();
+    const zw = r.w * z, zh = r.h * z;
+    try { ctx.drawImage(vidMain, r.x + (r.w - zw) / 2, r.y + (r.h - zh) / 2, zw, zh); } catch (e) {}
+  }
   // 3) B-roll overlay (crossfade)
   syncBrollVideos(clip, t);
   for (const b of clip.brolls) drawBroll(b, t, r);
