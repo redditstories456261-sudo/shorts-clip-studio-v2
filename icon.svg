@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0f1115"/>
+  <!-- clapperboard body -->
+  <rect x="96" y="168" width="320" height="220" rx="24" fill="#222836" stroke="#ffd23f" stroke-width="12"/>
+  <!-- clap slate (top, tilted) -->
+  <g transform="rotate(-12 256 150)">
+    <rect x="96" y="112" width="320" height="64" rx="14" fill="#ffd23f"/>
+    <g fill="#0f1115">
+      <rect x="120" y="112" width="26" height="64" transform="skewX(-24)"/>
+      <rect x="176" y="112" width="26" height="64" transform="skewX(-24)"/>
+      <rect x="232" y="112" width="26" height="64" transform="skewX(-24)"/>
+      <rect x="288" y="112" width="26" height="64" transform="skewX(-24)"/>
+      <rect x="344" y="112" width="26" height="64" transform="skewX(-24)"/>
+    </g>
+    <circle cx="112" cy="144" r="10" fill="#0f1115"/>
+  </g>
+  <!-- play triangle -->
+  <path d="M232 232 L232 328 L312 280 Z" fill="#ffd23f"/>
+  <!-- 9:16 hint bars -->
+  <rect x="392" y="216" width="10" height="124" rx="5" fill="#ffd23f" opacity="0.55"/>
+  <rect x="110" y="216" width="10" height="124" rx="5" fill="#ffd23f" opacity="0.55"/>
+</svg>

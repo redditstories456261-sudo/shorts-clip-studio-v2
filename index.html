@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Shorts Studio">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>Shorts Clip Studio v2</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="gearBtn" class="gear" aria-label="Settings kholein">⚙️</button>
+  <h1>🎬 Shorts Clip Studio <span class="vtag">v2</span></h1>
+  <p class="tagline">Lambi video se best moments nikalo — 9:16 Shorts, sample wale style me</p>
+</header>
+
+<main>
+  <!-- 1. UPLOAD -->
+  <section class="card" id="sec-upload">
+    <h2>1. Video Upload Karein</h2>
+    <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="Video upload karein">
+      <p class="dz-big">📁</p>
+      <p>Video yahan <b>drop</b> karein ya neeche button dabayein</p>
+      <label class="btn" for="fileInput">Video Chunein</label>
+      <input type="file" id="fileInput" accept="video/*" hidden>
+    </div>
+    <p id="videoInfo" class="muted"></p>
+    <div class="row wrap" style="margin-top:10px">
+      <button id="driveBtn" class="btn" type="button">☁️ Drive se lao</button>
+      <span class="muted">Google Drive ka share link paste karein</span>
+    </div>
+  </section>
+
+  <!-- 2. MOMENTS -->
+  <section class="card hidden" id="sec-moments">
+    <h2>2. Best Moments Dhoondein</h2>
+    <p class="muted">Pehle clip ki lambai chunein, phir tajweez hasil karein. App audio ki energy se behtareen hisse dhoondta hai — sab kuch aapke phone/browser me hota hai.</p>
+    <div class="row wrap">
+      <div class="seg" id="durSeg" role="group" aria-label="Clip ki lambai">
+        <button data-dur="30" class="active">30s</button>
+        <button data-dur="45">45s</button>
+        <button data-dur="65">65s</button>
+      </div>
+      <input id="customDur" type="number" min="5" max="600" step="1" placeholder="Custom (sec)">
+    </div>
+    <button id="analyzeBtn" class="btn primary">🔍 Moments Tajweez Karein</button>
+    <div id="analyzeProg" class="prog hidden"><div class="bar"></div><span></span></div>
+    <div id="cards" class="cards"></div>
+  </section>
+
+  <!-- 3. EDITOR -->
+  <section class="card hidden" id="sec-editor">
+    <h2>3. Clip Editor</h2>
+    <div class="row wrap">
+      <label class="mini">Shuru (sec)
+        <input id="clipStart" type="number" min="0" step="0.5">
+      </label>
+      <label class="mini">Lambai (sec)
+        <input id="clipDur" type="number" min="5" max="600" step="1">
+      </label>
+      <button id="newClipBtn" class="btn small">＋ Naya Clip</button>
+    </div>
+
+    <label class="fld">Title <span class="muted">(upar wali safed patti)</span>
+      <input id="clipTitle" type="text" maxlength="90" placeholder="Lazy Husband Runs Wife Ragged 😢💔">
+    </label>
+    <div class="row wrap">
+      <button id="aiTitleBtn" class="btn small" type="button">✨ AI Title</button>
+      <span class="muted">Transcript se 3 catchy titles</span>
+    </div>
+    <div id="titleChips" class="chips"></div>
+    <p id="titleStatus" class="muted"></p>
+
+    <label class="fld">Transcript / Captions
+      <textarea id="clipTranscript" rows="7" placeholder="[00:03.5] ye pehla jumla hai&#10;[00:08.0] ye *aham* lafz rang me aayega&#10;&#10;Ya saada text paste kar dein — app alfaaz clip me barabar taqseem kar dega."></textarea>
+    </label>
+    <p class="hint">💡 Har line is tarah likhein: <code>[MM:SS.s] text</code> (waqt clip ke shuru se). <code>*lafz*</code> ko rang milega — surkh, sabz, peela.</p>
+    <div class="row wrap">
+      <button id="aiTrBtn" class="btn small" type="button">🎙 AI Transcript (video se)</button>
+    </div>
+    <p class="hint">⚠️ AI video dekh kar <b>andaza</b> lagata hai — ghalat ho sakta hai, zaroor check kar lo. Internet darkar hai.</p>
+    <p id="trStatus" class="muted"></p>
+    <div class="row wrap">
+      <select id="trLang" aria-label="Translate ki zaban">
+        <option value="en">English</option>
+        <option value="ur">Urdu</option>
+        <option value="de">German</option>
+        <option value="pt-BR">Brazilian Portuguese</option>
+        <option value="hi">Hindi</option>
+        <option value="ar">Arabic</option>
+        <option value="fr">French</option>
+        <option value="es">Spanish</option>
+        <option value="tr">Turkish</option>
+        <option value="id">Indonesian</option>
+      </select>
+      <button id="trBtn" class="btn small" type="button">🌐 Translate</button>
+    </div>
+    <p id="langStatus" class="muted"></p>
+
+    <div class="broll">
+      <h3>🖼 B-Roll</h3>
+      <p class="muted">Tasveer ya chhoti video chunein, phir har ek ka waqt (clip ke shuru se, second me) aur dorania likhein.</p>
+      <div class="row wrap">
+        <label class="btn small" for="brollInput">＋ Tasveer / Video</label>
+        <input type="file" id="brollInput" accept="image/*,video/*" hidden multiple>
+      </div>
+      <div class="row wrap" style="margin-top:8px">
+        <input id="pixKw" type="text" placeholder="Keyword, masalan: kitchen" style="flex:1;min-width:140px">
+        <button id="pixBtn" class="btn small" type="button">🔍 Pixabay se dhoondo</button>
+      </div>
+      <div id="kwChips" class="chips"></div>
+      <div id="pixGrid" class="pixgrid"></div>
+      <p id="pixStatus" class="muted"></p>
+      <ul id="brollList" class="broll-list"></ul>
+    </div>
+  </section>
+
+  <!-- 4. PREVIEW -->
+  <section class="card hidden" id="sec-preview">
+    <h2>4. Preview</h2>
+    <div class="stage">
+      <canvas id="stage" width="720" height="1280"></canvas>
+    </div>
+    <div class="controls">
+      <button id="playBtn" class="btn">▶ Chalayein</button>
+      <input id="scrub" type="range" min="0" max="30" step="0.1" value="0" aria-label="Waqt">
+      <span id="timeLbl" class="mono">00:00 / 00:30</span>
+    </div>
+  </section>
+
+  <!-- 5. EXPORT -->
+  <section class="card hidden" id="sec-export">
+    <h2>5. Export</h2>
+    <p class="muted">Export asal waqt me hota hai (30s clip = 30s). Tab band na karein.</p>
+    <button id="exportBtn" class="btn primary">⬇ Clip Export Karein</button>
+    <div id="expProg" class="prog hidden"><div class="bar"></div><span></span></div>
+    <p id="formatNote" class="muted"></p>
+    <ul id="dlList" class="downloads"></ul>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Shorts Clip Studio v2 — 100% browser me, koi server nahi, koi upload nahi.</p>
+</footer>
+
+<!-- Hidden video elements: preview + thumbnail capture (object URLs = streaming, no base64) -->
+<video id="vidMain" class="hiddenvid" playsinline preload="auto"></video>
+<video id="vidThumb" class="hiddenvid" muted playsinline preload="auto"></video>
+
+<!-- Settings modal: AI keys (sirf localStorage me) -->
+<div id="setModal" class="modal hidden" role="dialog" aria-label="Settings">
+  <div class="modal-box">
+    <h2>⚙️ Settings — AI Keys</h2>
+    <p class="muted">Keys <b>sirf is browser</b> me rehti hain (localStorage) — kahin upload nahi hotin.</p>
+    <label class="fld">Groq API Key <span class="muted">(muft — <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>)</span>
+      <input id="setGroq" type="password" placeholder="gsk_…" autocomplete="off">
+    </label>
+    <label class="fld">Pixabay API Key <span class="muted">(<a href="https://pixabay.com/api/docs/" target="_blank" rel="noopener">pixabay.com/api/docs</a> se muft milti hai)</span>
+      <input id="setPixabay" type="password" placeholder="Pixabay key" autocomplete="off">
+    </label>
+    <label class="fld">Google API Key <span class="muted">(Drive import ke liye — muft)</span>
+      <input id="setGoogle" type="password" placeholder="AIza…" autocomplete="off">
+    </label>
+    <p class="hint">📝 Google key banane ke steps: <b>Google Cloud Console</b> (console.cloud.google.com) → naya project → <b>Drive API enable</b> karein → <b>Credentials → API key</b> banao → yahan paste karo. Bilkul muft hai, card nahi chahiye.</p>
+    <label class="chk"><input id="setPoll" type="checkbox"> Pollinations — keyless AI (bina key, muft; kabhi slow ya limit ho sakta hai)</label>
+    <label class="chk"><input id="setPuter" type="checkbox"> Puter.js Muse — pehli dafa sign-in popup aa sakta hai (<a href="https://puter.com" target="_blank" rel="noopener">puter.com</a>)</label>
+    <div class="row wrap">
+      <button id="setSave" class="btn primary" type="button">💾 Save</button>
+      <button id="setClose" class="btn" type="button">Band karein</button>
+    </div>
+    <p id="setMsg" class="muted"></p>
+    <p class="hint">ℹ️ AI features internet mangte hain. Bina Groq key ke sirf keyless providers (Pollinations / Puter) chalte hain — koi paid API nahi.</p>
+  </div>
+</div>
+
+<!-- Drive import modal -->
+<div id="driveModal" class="modal hidden" role="dialog" aria-label="Drive se video layein">
+  <div class="modal-box">
+    <h2>☁️ Drive se Video Layein</h2>
+    <p class="muted">Google Drive ka <b>share link</b> paste karein. File <b>"Anyone with the link"</b> par share honi chahiye.</p>
+    <label class="fld">Drive Link
+      <input id="driveLink" type="url" placeholder="https://drive.google.com/file/d/…/view" autocomplete="off">
+    </label>
+    <div class="row wrap">
+      <button id="driveFetch" class="btn primary" type="button">🔍 Check karein</button>
+      <button id="driveClose" class="btn" type="button">Band karein</button>
+    </div>
+    <p id="driveStatus" class="muted"></p>
+    <div id="driveMeta" class="hidden">
+      <p id="driveName" class="mono" style="word-break:break-all"></p>
+      <p id="driveSize" class="muted"></p>
+      <div id="driveProg" class="prog hidden"><div class="bar"></div><span></span></div>
+      <div class="row wrap" style="margin-top:8px">
+        <button id="driveConfirm" class="btn primary" type="button">✅ Ye video lao</button>
+      </div>
+      <p class="hint">⏳ Bari file me waqt lag sakta hai — tab band na karein.</p>
+    </div>
+    <p id="driveKeyHint" class="hint hidden">ℹ️ Pehle Settings me <b>Google API Key</b> dalna zaroori hai (muft). <button id="driveGoSettings" class="btn small" type="button">⚙️ Settings kholein</button></p>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+// PWA: service worker register (sirf https ya localhost par chalta hai — GitHub Pages OK)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('[PWA] service worker ready'))
+      .catch(err => console.warn('[PWA] SW register nahi ho saka:', err));
+  });
+}
+</script>
+</body>
+</html>

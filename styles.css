@@ -1,0 +1,211 @@
+/* Shorts Clip Studio v2 — dark theme, mobile-first */
+:root{
+  --bg:#0f1115;
+  --card:#1a1e26;
+  --card2:#222836;
+  --line:#2e3546;
+  --txt:#eef1f6;
+  --muted:#9aa3b5;
+  --accent:#ffd23f;
+  --accent-d:#1a1405;
+  --green:#3ddc84;
+  --red:#ff5a5a;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+  line-height:1.5;
+  -webkit-text-size-adjust:100%;
+}
+.topbar{
+  text-align:center;
+  padding:22px 16px 10px;
+}
+.topbar h1{margin:0;font-size:1.5rem}
+.vtag{
+  font-size:.7rem;background:var(--accent);color:#111;
+  border-radius:6px;padding:2px 8px;vertical-align:middle;
+}
+.tagline{color:var(--muted);margin:6px 0 0;font-size:.95rem}
+main{max-width:860px;margin:0 auto;padding:10px 14px 40px}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:16px;
+  margin:14px 0;
+}
+.card h2{margin:0 0 10px;font-size:1.15rem}
+.card h3{margin:14px 0 6px;font-size:1rem}
+.hidden{display:none!important}
+.muted{color:var(--muted);font-size:.9rem}
+.mono{font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hint{font-size:.85rem;color:var(--muted)}
+.hint code{background:var(--card2);padding:1px 6px;border-radius:6px;color:var(--accent)}
+
+/* Buttons + inputs */
+.btn{
+  display:inline-block;background:var(--card2);color:var(--txt);
+  border:1px solid var(--line);border-radius:10px;
+  padding:10px 18px;font-size:1rem;cursor:pointer;text-align:center;
+}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);color:#111;border-color:var(--accent);font-weight:700}
+.btn.small{padding:7px 12px;font-size:.9rem}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+input[type=text],input[type=number],textarea{
+  width:100%;background:#0d1017;color:var(--txt);
+  border:1px solid var(--line);border-radius:10px;
+  padding:10px 12px;font-size:1rem;font-family:inherit;
+}
+textarea{resize:vertical}
+label.fld{display:block;margin:12px 0;font-weight:600}
+label.fld input,label.fld textarea{margin-top:6px;font-weight:400}
+label.mini{display:flex;flex-direction:column;gap:4px;font-size:.9rem;min-width:110px;flex:1}
+.row{display:flex;gap:10px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+
+/* Dropzone */
+.dropzone{
+  border:2px dashed var(--line);border-radius:var(--radius);
+  padding:28px 16px;text-align:center;cursor:pointer;
+  transition:border-color .2s,background .2s;
+}
+.dropzone.over{border-color:var(--accent);background:#1c1a10}
+.dz-big{font-size:2.4rem;margin:0}
+
+/* Segmented control */
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{
+  background:transparent;color:var(--txt);border:0;
+  padding:10px 16px;font-size:1rem;cursor:pointer;
+}
+.seg button.active{background:var(--accent);color:#111;font-weight:700}
+#customDur{max-width:150px}
+
+/* Progress */
+.prog{
+  background:#0d1017;border:1px solid var(--line);border-radius:10px;
+  margin:12px 0;position:relative;height:38px;overflow:hidden;
+}
+.prog .bar{
+  height:100%;width:0%;background:linear-gradient(90deg,#8a6d00,var(--accent));
+  transition:width .15s;
+}
+.prog span{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;color:var(--txt);text-shadow:0 1px 3px #000;
+}
+
+/* Suggestion cards */
+.cards{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:10px;margin-top:12px;
+}
+.scard{
+  background:var(--card2);border:1px solid var(--line);border-radius:12px;
+  overflow:hidden;cursor:pointer;text-align:left;padding:0;color:var(--txt);
+  font-family:inherit;
+}
+.scard img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#000}
+.scard .meta{padding:8px 10px;font-size:.85rem}
+.scard .score{color:var(--accent);font-weight:700}
+.scard.sel{outline:2px solid var(--accent)}
+
+/* Preview stage */
+.stage{display:flex;justify-content:center;background:#000;border-radius:12px;padding:10px}
+.stage canvas{
+  width:min(100%,380px);height:auto;aspect-ratio:9/16;border-radius:8px;background:#000;
+}
+.controls{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.controls input[type=range]{flex:1;min-width:140px;accent-color:var(--accent)}
+#timeLbl{font-size:.9rem;color:var(--muted)}
+
+/* B-roll list */
+.broll-list{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.broll-list li{
+  display:flex;gap:8px;align-items:center;background:var(--card2);
+  border:1px solid var(--line);border-radius:10px;padding:8px;
+}
+.broll-list img.th{width:64px;height:36px;object-fit:cover;border-radius:6px;background:#000}
+.broll-list .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.85rem}
+.broll-list label{font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.broll-list input{width:64px;padding:6px;font-size:.85rem}
+.broll-list .rm{background:none;border:0;color:var(--red);font-size:1.2rem;cursor:pointer}
+
+/* Downloads */
+.downloads{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.downloads a{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;
+  background:var(--card2);border:1px solid var(--line);border-radius:10px;
+  padding:10px 14px;color:var(--txt);text-decoration:none;
+}
+.downloads a:hover{border-color:var(--accent)}
+.dl-fmt{font-size:.75rem;color:var(--muted);background:#0d1017;padding:2px 8px;border-radius:6px}
+
+/* Hidden videos used for frame capture */
+.hiddenvid{position:fixed;left:-9999px;top:0;width:160px;height:90px;opacity:0;pointer-events:none}
+
+.foot{text-align:center;color:var(--muted);font-size:.8rem;padding:18px}
+
+@media (min-width:640px){
+  .topbar h1{font-size:1.8rem}
+  .card{padding:20px}
+}
+
+/* ---- AI features (v2.1): Settings, chips, Pixabay grid, card AI button ---- */
+.topbar{position:relative}
+.gear{
+  position:absolute;top:12px;right:12px;
+  background:var(--card2);border:1px solid var(--line);border-radius:10px;
+  font-size:1.25rem;padding:6px 10px;cursor:pointer;color:var(--txt);
+}
+.gear:active{transform:scale(.94)}
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:60;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+}
+.modal-box{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px;max-width:500px;width:100%;max-height:92vh;overflow:auto;
+}
+.modal-box h2{margin-top:0}
+.modal-box a{color:var(--accent)}
+.chk{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-size:.95rem;cursor:pointer}
+.chk input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chips:empty{margin:0}
+.chip{
+  background:var(--card2);border:1px solid var(--accent);color:var(--txt);
+  border-radius:20px;padding:8px 14px;cursor:pointer;
+  font-size:.92rem;font-family:inherit;text-align:left;
+}
+.chip:active{transform:scale(.96)}
+.chip.sm{padding:5px 11px;font-size:.8rem;border-color:var(--line)}
+.pixgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.pixgrid:empty{margin:0}
+.pix{border:1px solid var(--line);border-radius:10px;overflow:hidden;padding:0;background:#000;cursor:pointer}
+.pix:active{transform:scale(.96)}
+.pix:disabled{opacity:.5}
+.pix img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+select{
+  background:#0d1017;color:var(--txt);border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;font-size:1rem;font-family:inherit;max-width:100%;
+}
+/* Suggestion card ab div wrapper hai (AI button ke liye); selection wala hissa andar */
+.scard{position:relative}
+.scard-main{
+  background:none;border:0;padding:0;margin:0;width:100%;
+  text-align:left;color:inherit;font:inherit;cursor:pointer;display:block;
+}
+.scard-ai{
+  position:absolute;top:6px;right:6px;
+  background:rgba(0,0,0,.7);border:1px solid var(--line);border-radius:8px;
+  font-size:1rem;padding:4px 9px;cursor:pointer;color:#fff;
+}
+.scard-ai:active{transform:scale(.92)}
+.scard-ai:disabled{opacity:.5;cursor:wait}
