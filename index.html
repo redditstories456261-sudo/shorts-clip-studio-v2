@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="Shorts Studio">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Shorts Clip Studio v2</title>
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -67,6 +67,12 @@
         <input id="clipDur" type="number" min="5" max="600" step="1">
       </label>
       <button id="newClipBtn" class="btn small">＋ Naya Clip</button>
+      <label class="mini">Video Framing
+        <select id="clipFraming">
+          <option value="blur">Dhundli Background</option>
+          <option value="full">Full Screen (crop)</option>
+        </select>
+      </label>
     </div>
 
     <label class="fld">Title <span class="muted">(upar wali safed patti)</span>
